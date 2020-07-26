@@ -1,0 +1,25 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1595794538225.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "91EACF7D",
+    "lastKnownWriteTime" : 1594077851,
+    "last_content_update" : 1594077851,
+    "path" : "~/Documents/covid_latam/code/seguimiento_rt.R",
+    "project_path" : "code/seguimiento_rt.R",
+    "properties" : {
+        "cursorPosition" : "33,0",
+        "scrollLine" : "26"
+    },
+    "read_only" : false,
+    "read_only_alternatives" : [
+    ],
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

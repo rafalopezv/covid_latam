@@ -1,0 +1,312 @@
+# sobre: calculo de Rt de países y departamentos de Bolivia
+library(EpiEstim)
+library(tidyverse)
+library(magrittr)
+library(furrr)
+library(future)
+
+plan(multiprocess) # activar procesamiento paralelo
+Sys.setlocale(locale = "es_ES.UTF-8") # cambiar idioma para que los ejes de los gráficos sean en español
+
+# importar bases y funciones
+source("code/limpieza_bases.R")
+source("code/funciones.R")
+
+# partir bases para aplicar funciones
+df_mundo %>% 
+  group_split(base, pais_region) -> temp_mundo
+
+df_dptos %>% 
+  group_split(base, pais_region) -> temp_dptos
+
+# aplicar funciones: epistim_intervalo_1 == ICL
+furrr::future_map(temp_mundo, epistim_intervalo_1, .progress = T) %>% bind_rows() -> estim_1_mundo
+furrr::future_map(temp_mundo, epistim_intervalo_2, .progress = T) %>% bind_rows() -> estim_2_mundo
+furrr::future_map(temp_dptos, epistim_intervalo_1, .progress = T) %>% bind_rows() -> estim_1_dptos
+furrr::future_map(temp_dptos, epistim_intervalo_2, .progress = T) %>% bind_rows() -> estim_2_dptos
+
+# cambio de nombres de paises a español en bases mundo 
+filtrar <- c("Bolivia", "Italy", "US", "Spain", "Argentina", 
+             "Brazil", "Chile", "Poland", "Korea, South", 
+             "France", "Croatia", "Dominican Republic") 
+
+estim_1_mundo %<>% filter(`País o Región` %in% filtrar)
+
+estim_1_mundo$`País o Región` %<>% gsub("Italy", "Italia", .)
+estim_1_mundo$`País o Región` %<>% gsub("US", "Estados Unidos", .)
+estim_1_mundo$`País o Región` %<>% gsub("Spain", "España", .)
+estim_1_mundo$`País o Región` %<>% gsub("Brazil", "Brasil", .)
+estim_1_mundo$`País o Región` %<>% gsub("Poland", "Polonia", .)
+estim_1_mundo$`País o Región` %<>% gsub("Korea, South", "Corea del Sur", .)
+estim_1_mundo$`País o Región` %<>% gsub("France", "Francia", .)
+estim_1_mundo$`País o Región` %<>% gsub("Croatia", "Croacia", .)
+estim_1_mundo$`País o Región` %<>% gsub("Dominican Republic", "República Dominicana", .)
+
+
+# --------------------------------------
+# graficos: mundo
+# --------------------------------------
+estim_1_mundo %>% 
+  filter(`País o Región` == "Bolivia") %>% 
+  ggplot(aes(`Día de cierre`, Promedio, group = 1)) + 
+  geom_point(color = "#7F0000", size = 2) + 
+  geom_path(color = "#7F0000", size = 1, alpha = 0.5) + 
+  geom_text(aes(label = Promedio), color = "#2F4F4F", vjust =  -1, size = 4) + 
+  geom_ribbon(aes(ymin = `Límite inferior`, ymax = `Límite superior`), 
+              alpha = 0.15, fill = "#FF8000") +
+  hrbrthemes::theme_ipsum_rc(plot_title_size = 17, subtitle_size = 15, axis_text_size = 13, axis_title_size = 13)  +
+  scale_y_continuous(breaks = seq(0, 3, 1))  +
+  scale_x_date(date_labels = "%b %d", breaks = "5 days") + 
+  labs(
+    title = "Evolución del ritmo de contagio en Bolivia",
+    subtitle = "Medición semanal en base a reporte de Confirmados y Fallecidos",
+    y = "Rt",
+    x = "Día de cierre de la medición",
+    caption = "Fuente: COVID-19 Data Repository by the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University"
+  ) + 
+  geom_hline(yintercept = 1, size = 1, linetype = "dotted",
+             alpha = 0.9, color = "black") + 
+  facet_wrap(~Base, ncol = 1) +
+  ggsave("img/bolivia_rt.jpg", width = 12, height = 8)
+
+# comparativo entre países por contagiados
+estim_1_mundo %>% 
+  filter(Base == "confirmados") %>% 
+  mutate_if(is.numeric, round, 1) %>% 
+  ggplot(aes(`Día de inicio`, Promedio, group = 1)) + 
+  geom_point(color = "#7F0000", size = 2) + 
+  geom_text(aes(label = Promedio), vjust = -1, hjust = 1, color = "#2F4F4F", size = 3) +
+  geom_path(color = "#7F0000", size = 1, alpha = 0.5) + 
+  geom_ribbon(aes(ymin = `Límite inferior`, ymax = `Límite superior`), 
+              alpha = 0.15, fill = "#FF8000") +
+  hrbrthemes::theme_ipsum_rc(grid = FALSE)  +
+  scale_y_continuous(breaks = seq(1, 15, 2))  +
+  labs(
+    title = "Evolución del ritmo de contagio",
+    subtitle = "Medición semanal en base a reporte de Confirmados",
+    y = "Rt",
+    x = "Cada punto representa una semana",
+    caption = "Fuente: COVID-19 Data Repository by the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University"
+  ) + 
+  geom_hline(yintercept = 1, size = 1, linetype = "dotted",
+             alpha = 0.9, color = "black") + 
+  theme(
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank()
+  ) +
+  facet_wrap(~`País o Región`, ncol = 3) +
+  ggsave("img/paises_rt_confirmados.jpg", width = 12, height = 8)
+
+# comparativo entre países por fallecidos
+estim_1_mundo %>% 
+  filter(Base == "fallecidos") %>% 
+  mutate_if(is.numeric, round, 1) %>% 
+  ggplot(aes(`Día de inicio`, Promedio, group = 1)) + 
+  geom_point(color = "#7F0000", size = 2) + 
+  geom_text(aes(label = Promedio), vjust = -1, hjust = 1, color = "#2F4F4F", size = 3) +
+  geom_path(color = "#7F0000", size = 1, alpha = 0.5) + 
+  geom_ribbon(aes(ymin = `Límite inferior`, ymax = `Límite superior`), 
+              alpha = 0.15, fill = "#FF8000") +
+  hrbrthemes::theme_ipsum_rc(grid = FALSE)  +
+  scale_y_continuous(breaks = seq(1, 15, 2))  +
+  labs(
+    title = "Evolución del ritmo de contagio",
+    subtitle = "Medición semanal en base a reporte de Confirmados",
+    y = "Rt",
+    x = "Cada punto representa una semana",
+    caption = "Fuente: COVID-19 Data Repository by the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University"
+  ) + 
+  geom_hline(yintercept = 1, size = 1, linetype = "dotted",
+             alpha = 0.9, color = "black") + 
+  theme(
+    axis.text.x = element_blank(),
+    axis.text.y = element_blank()
+  ) +
+  facet_wrap(~`País o Región`, ncol = 3) +
+  ggsave("img/paises_rt_fallecidos.jpg", width = 12, height = 8)
+
+# Rt promedio con íntervalos de confianza
+estim_1_mundo %>% 
+  group_split(`País o Región`, Base) %>% 
+  map(., ~slice(., nrow(.))) %>% 
+  bind_rows() %>% 
+  arrange(Promedio) %>% 
+  mutate(
+    num = 1:nrow(.),
+    clave = case_when(
+      `País o Región` == "Bolivia" ~ "si", 
+      T ~ "no"
+    )
+  ) %>% 
+  ggplot(aes(fct_reorder(`País o Región`, num), Promedio, color = clave)) +
+  geom_point(size = 3) +
+  geom_errorbar(aes(ymin = `Límite inferior` , ymax = `Límite superior`), 
+                width = 0.1, position=position_dodge(0.05), size = 1) + 
+  hrbrthemes::theme_ipsum_rc(plot_title_size = 17, subtitle_size = 15, axis_text_size = 10, 
+                             axis_title_size = 13, grid = "Y") + 
+  ggthemes::scale_color_tableau() + 
+  theme(
+    legend.position = "none"
+  ) + 
+  labs(
+    title = "Ritmo de contagio de la útima semana",
+    subtitle = "En base a reporte de Fallecidos y Confirmados",
+    x = "Las barras representan los intervalos de confianza",
+    y = "Rt",
+    caption = "Fuente: COVID-19 Data Repository by the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University"
+  ) +
+  geom_hline(yintercept = 1, size = 1, linetype = "dotted",
+             alpha = 0.9, color = "darkgray") +
+  facet_wrap(~Base, scales = "free_y") + 
+  theme(axis.text.x = element_text(angle = 45)) +
+  ggsave("img/starwars_rt.jpg", width = 15, height = 8)
+  
+# exportar tabla
+estim_1_mundo %>% 
+  write_csv("output/tablart_mundo.csv")
+
+
+# --------------------------------------
+# graficos: departamental
+# --------------------------------------
+# un grafico por departamento con: i) prevalencia infectados (linea); ii) prevalencia muertos (linea);
+# iii) incidencia infectados (barra); iv) incidencia muertos (barra)
+
+df_dptos %>% 
+  filter(base == "confirmados") %>% 
+  group_by(pais_region) %>% 
+  mutate(num = sum(casos_acumulados)) %>% 
+  ggplot(aes(dias, incidencia)) + 
+  geom_col(fill = "red", color = NA, alpha = 0.7) +
+  facet_wrap(~fct_reorder(pais_region, num, .desc = T), scales = "free_y") + 
+  scale_x_continuous(breaks = seq(0, 60, 10)) + 
+  #scale_y_continuous(breaks = seq(0, 3000, 500)) +
+  hrbrthemes::theme_ipsum_rc(plot_title_size = 17, subtitle_size = 15, axis_text_size = 13,
+                             axis_title_size = 13, grid = "Y")  +
+  labs(
+    title = "Nuevos casos confirmados por día por Departamento",
+    subtitle = "Desde paciente '0' en cada Departamento",
+    y = "Nuevos casos",
+    x = "días desde paciente 0",
+    caption = "Fuente: Repositorio de Mauricio Foronda 'covid19-bolivia' en base a Bolivia Segura"
+  ) + 
+  ggsave("img/dptos_incidencia_confirmados.jpg", width = 12, height = 8)
+
+# departamentos Bolivia fallcidos acumulados
+df_dptos %>% 
+  filter(base == "fallecidos") %>% 
+  group_by(pais_region) %>% 
+  mutate(num = sum(casos_acumulados)) %>% 
+  ggplot(aes(dias, incidencia)) + 
+  geom_col(fill = "red", color = NA, alpha = 0.9) +
+  facet_wrap(~fct_reorder(pais_region, num, .desc = T), scales = "free_y") + 
+  scale_x_continuous(breaks = seq(0, 60, 10)) + 
+  #scale_y_continuous(breaks = seq(0, 3000, 500)) +
+  hrbrthemes::theme_ipsum_rc(plot_title_size = 17, subtitle_size = 15, axis_text_size = 13,
+                             axis_title_size = 13, grid = "Y")  +
+  labs(
+    title = "Nuevos casos de fallecidos por día por Departamento",
+    subtitle = "Desde paciente '0' en cada Departamento",
+    y = "Nuevos casos",
+    x = "días desde primer fallecimiento",
+    caption = "Fuente: Repositorio de Mauricio Foronda 'covid19-bolivia' en base a Bolivia Segura"
+  ) + 
+  ggsave("img/dptos_incidencia_fallecidos.jpg", width = 12, height = 8)
+
+
+# prevalencia departamentos
+df_dptos %>% 
+  filter(base == "confirmados") %>% 
+  group_by(pais_region) %>% 
+  mutate(num = sum(casos_acumulados)) %>% 
+  ggplot(aes(dias, casos_acumulados)) + 
+  geom_line(color = "red", alpha = 0.8, size = 1.5) +
+  facet_wrap(~fct_reorder(pais_region, num, .desc = T), scales = "free_y") + 
+  scale_x_continuous(breaks = seq(0, 60, 10)) + 
+  #scale_y_continuous(breaks = seq(0, 3000, 500)) +
+  hrbrthemes::theme_ipsum_rc(plot_title_size = 17, subtitle_size = 15, axis_text_size = 13, 
+                             axis_title_size = 13, grid = "Y")  + 
+  labs(
+    title = "Casos acumulados confirmados por Departamento",
+    subtitle = "Desde paciente '0' en cada Departamento",
+    y = "Casos acumulados",
+    x = "días desde paciente 0",
+    caption = "Fuente: Repositorio de Mauricio Foronda 'covid19-bolivia' en base a Bolivia Segura"
+  ) + 
+  ggsave("img/dptos_prevalencia_confirmados.jpg", width = 12, height = 8)
+
+
+# prevalencia departamentos
+df_dptos %>% 
+  filter(base == "fallecidos") %>% 
+  group_by(pais_region) %>% 
+  mutate(num = sum(casos_acumulados)) %>% 
+  ggplot(aes(dias, casos_acumulados)) + 
+  geom_line(color = "red", alpha = 0.8, size = 1.5) +
+  facet_wrap(~fct_reorder(pais_region, num, .desc = T), scales = "free_y") + 
+  scale_x_continuous(breaks = seq(0, 60, 10)) + 
+  #scale_y_continuous(breaks = seq(0, 3000, 500)) +
+  hrbrthemes::theme_ipsum_rc(plot_title_size = 17, subtitle_size = 15, axis_text_size = 13, 
+                             axis_title_size = 13, grid = "Y")  +
+  labs(
+    title = "Casos de fallcidos acumulados por Departamento",
+    subtitle = "Desde primer fallecimiento en cada Departamento",
+    y = "Casos acumulados",
+    x = "días desde paciente 0",
+    caption = "Fuente: Repositorio de Mauricio Foronda 'covid19-bolivia' en base a Bolivia Segura"
+  ) + 
+  ggsave("img/dptos_prevalencia_fallecidos.jpg", width = 12, height = 8)
+
+# star wars por dpto
+estim_1_dptos %>% 
+  group_split(`País o Región`, Base) %>% 
+  map(., ~slice(., nrow(.))) %>% 
+  bind_rows() %>% 
+  arrange(Promedio) %>% 
+  mutate(
+    num = 1:nrow(.),
+    clave = case_when(
+      `País o Región` == "Bolivia" ~ "si", 
+      T ~ "no"
+    )
+  ) %>% 
+  ggplot(aes(fct_reorder(`País o Región`, num), Promedio, color = `País o Región`)) +
+  geom_point(size = 3) +
+  geom_errorbar(aes(ymin = `Límite inferior` , ymax = `Límite superior`), 
+                width = 0.1, position=position_dodge(0.05), size = 1) + 
+  hrbrthemes::theme_ipsum_rc(plot_title_size = 17, subtitle_size = 15, axis_text_size = 10, 
+                             axis_title_size = 13, grid = "Y") + 
+  ggthemes::scale_color_tableau() + 
+  theme(
+    legend.position = "none"
+  ) + 
+  labs(
+    title = "Ritmo de contagio de la útima semana",
+    subtitle = "En base a reporte de Fallecidos y Confirmados",
+    x = "Las barras representan los intervalos de confianza",
+    y = "Rt",
+    caption = "Fuente: Repositorio de Mauricio Foronda 'covid19-bolivia' en base a Bolivia Segura"
+  ) +
+  geom_hline(yintercept = 1, size = 1, linetype = "dotted",
+             alpha = 0.9, color = "darkgray") +
+  facet_wrap(~Base, scales = "free_y") + 
+  theme(axis.text.x = element_text(angle = 45)) +
+  ggsave("img/starwars_rt_bolivia.jpg", width = 15, height = 8)
+
+
+estim_1_dptos %>% 
+  write_csv("output/tablart_dptos.csv")
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+
+  
