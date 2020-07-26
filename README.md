@@ -7,4 +7,6 @@ La fuente de los datos proviene del repositorio de la universidad Jhon Jokpins: 
 
 La actualziación es diaria.
 
+Autores: Juan Cristóboal Birbuet y  Rafael López V.
+
 
