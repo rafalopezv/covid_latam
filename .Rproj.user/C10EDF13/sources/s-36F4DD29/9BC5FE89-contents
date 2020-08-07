@@ -63,7 +63,7 @@ df_mundo %>%
   ungroup() %>% 
   mutate(
     titulo = paste0(pais_nombre_corto, ", ", casos, " casos", "\n", total_semanas,  
-                    " semanas desde paciente 0", "\n", " Nuevos casos última semana:", ult_semana)
+                    " semanas desde paciente 0", "\n", " Casos últ. semana:", ult_semana)
   ) -> temp
 
 
@@ -90,7 +90,7 @@ temp %>%
     panel.background = element_rect(fill = "#F8F8F8", colour = NA),
     strip.background = element_rect(fill = "#F8F8F8", colour = NA),
   )  + 
-  ggsave("img/confirmados_latam.svg", width = 20, height = 21, limitsize = F)
+  ggsave("img/confirmados_latam.svg", width = 19, height = 21, limitsize = F)
 
 
 # preparación de base: confirmados
@@ -122,7 +122,7 @@ df_mundo %>%
   ungroup() %>% 
   mutate(
     titulo = paste0(pais_nombre_corto, ", ", casos, " fallecidos", "\n", total_semanas,  
-                    " semanas desde fallecido 0", "\n", " Nuevos fallecidos última semana:", ult_semana)
+                    " semanas desde fallecido 0", "\n", " Fallecidos últ. semana:", ult_semana)
   ) -> temp
 
 
@@ -149,7 +149,7 @@ temp %>%
     panel.background = element_rect(fill = "#F8F8F8", colour = NA),
     strip.background = element_rect(fill = "#F8F8F8", colour = NA),
   )  + 
-  ggsave("img/fallecidos_latam.svg", width = 20, height = 21, limitsize = F)
+  ggsave("img/fallecidos_latam.svg", width = 19, height = 21, limitsize = F)
 
 
 

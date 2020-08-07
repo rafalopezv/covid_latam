@@ -3,7 +3,6 @@ output:
   html_document: 
     css: style.css
 lang: es-CO
-bibliography: packages.bib
 ---
 
 ```{r setup, include=FALSE}
@@ -15,7 +14,7 @@ library(dplyr)
 library(knitr)
 
 source("code/graficos_latam.R")
-
+Sys.setlocale(locale = "es_ES.UTF-8")
 ```
 
 
@@ -23,7 +22,7 @@ source("code/graficos_latam.R")
 <br>
 <center>[Juan Cristóbal Birbuet](https://www.linkedin.com/in/juan-cristóbal-birbuet-rosazza-b563208/) & [Rafael López V.](https://rafalopezv.io/about/)</center>
 <br>
-<center>Última actualización: `r format(Sys.time(), '%d %B, %Y. %X  %Z')`</center>
+<center>Última actualización: `r format(Sys.time(), '%d %B, %Y, %X  %Z')`</center>
 <br>
 <br>
 <br>
@@ -31,88 +30,88 @@ source("code/graficos_latam.R")
 <center><h1>Número de reproducción dependiente del tiempo (Rt) en la última semana en base a **casos confirmados**</h1></center>
 <center><b><h3>Gráfico interactivo: Pase el mouse sobre el gráfico para mayor información.</h3></b></center>
 <br>
-<iframe frameBorder="0" src="img/rt_latam_confirmados.html" width="100%" height="700" allowtransparency="true"></iframe>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/rt_latam_confirmados.html" width="100%" height="700" allowtransparency="true"></iframe>
 <br>
 <br>
 <br>
 <center><b><h1>Número de reproducción dependiente del tiempo (Rt) en la última semana en base a  **fallecidos**</h1></b></center>
 <center><b><h3 style="font-family: Source Code Pro;">Gráfico interactivo: Pase el mouse sobre el gráfico para mayor información.</h3></b></center>
 <br>
-<iframe frameBorder="0" src="img/rt_latam_fallecidos.html" width="100%" height="700" allowtransparency="true"></iframe>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/rt_latam_fallecidos.html" width="100%" height="700" allowtransparency="true"></iframe>
 <br>
 <br>
 <br>
-<center><b><h1>Serie de tiempo dl número de reproducción dependiente del tiempo (Rt) por semana y por país desde el primer confirmado y fallecido  </h1></b></center>
+<center><b><h1>Serie de tiempo del número de reproducción dependiente del tiempo (Rt) por semana y por país desde el primer confirmado y fallecido  </h1></b></center>
 <center><b><h3 style="font-family: Source Code Pro;">Gráfico interactivo: Pase el mouse sobre el gráfico para mayor información.Puede desactivar las categoría de confirmados o fallecidos</h3></b></center>
 <br>
-<iframe frameBorder="0" src="img/argentina.html" width="100%" height="200" allowtransparency="true"></iframe>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/argentina.html" width="100%" height="200" allowtransparency="true"></iframe>
 
-<iframe frameBorder="0" src="img/bolivia.html" width="100%" height="200" allowtransparency="true"></iframe>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/bolivia.html" width="100%" height="200" allowtransparency="true"></iframe>
 
-<iframe frameBorder="0" src="img/brasil.html" width="100%" height="200" allowtransparency="true"></iframe>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/brasil.html" width="100%" height="200" allowtransparency="true"></iframe>
 
-<iframe frameBorder="0" src="img/chile.html" width="100%" height="200" allowtransparency="true"></iframe>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/chile.html" width="100%" height="200" allowtransparency="true"></iframe>
 
-<iframe frameBorder="0" src="img/colombia.html" width="100%" height="200" allowtransparency="true"></iframe>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/colombia.html" width="100%" height="200" allowtransparency="true"></iframe>
 
-<iframe frameBorder="0" src="img/costa_rica.html" width="100%" height="200" allowtransparency="true"></iframe>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/costa_rica.html" width="100%" height="200" allowtransparency="true"></iframe>
 
-<iframe frameBorder="0" src="img/cuba.html" width="100%" height="200" allowtransparency="true"></iframe>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/cuba.html" width="100%" height="200" allowtransparency="true"></iframe>
 
-<iframe frameBorder="0" src="img/ecuador.html" width="100%" height="200" allowtransparency="true"></iframe>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/ecuador.html" width="100%" height="200" allowtransparency="true"></iframe>
 
-<iframe frameBorder="0" src="img/el_salvador.html" width="100%" height="200" allowtransparency="true"></iframe>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/el_salvador.html" width="100%" height="200" allowtransparency="true"></iframe>
 
-<iframe frameBorder="0" src="img/guatemala.html" width="100%" height="200" allowtransparency="true"></iframe>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/guatemala.html" width="100%" height="200" allowtransparency="true"></iframe>
 
-<iframe frameBorder="0" src="img/haiti.html" width="100%" height="200" allowtransparency="true"></iframe>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/haiti.html" width="100%" height="200" allowtransparency="true"></iframe>
 
-<iframe frameBorder="0" src="img/honduras.html" width="100%" height="200" allowtransparency="true"></iframe>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/honduras.html" width="100%" height="200" allowtransparency="true"></iframe>
 
-<iframe frameBorder="0" src="img/mexico.html" width="100%" height="200" allowtransparency="true"></iframe>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/mexico.html" width="100%" height="200" allowtransparency="true"></iframe>
 
-<iframe frameBorder="0" src="img/nicaragua.html" width="100%" height="200" allowtransparency="true"></iframe>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/nicaragua.html" width="100%" height="200" allowtransparency="true"></iframe>
 
-<iframe frameBorder="0" src="img/panama.html" width="100%" height="200" allowtransparency="true"></iframe>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/panama.html" width="100%" height="200" allowtransparency="true"></iframe>
 
-<iframe frameBorder="0" src="img/paraguay.html" width="100%" height="200" allowtransparency="true"></iframe>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/paraguay.html" width="100%" height="200" allowtransparency="true"></iframe>
 
-<iframe frameBorder="0" src="img/peru.html" width="100%" height="200" allowtransparency="true"></iframe>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/peru.html" width="100%" height="200" allowtransparency="true"></iframe>
 
-<iframe frameBorder="0" src="img/republica_dominicana.html" width="100%" height="200" allowtransparency="true"></iframe>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/republica_dominicana.html" width="100%" height="200" allowtransparency="true"></iframe>
 
-<iframe frameBorder="0" src="img/uruguay.html" width="100%" height="200" allowtransparency="true"></iframe>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/uruguay.html" width="100%" height="200" allowtransparency="true"></iframe>
 
-<iframe frameBorder="0" src="img/venezuela.html" width="100%" height="200" allowtransparency="true"></iframe>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/venezuela.html" width="100%" height="200" allowtransparency="true"></iframe>
 <br>
 <br>
 <br>
 <center><b><h1>Nuevos casos *confirmados* por día desde paciente '0' en cada país</h1></b></center>
-<center><b><h3>Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte de abajo, los países que quiera comparar. El ancho de cada color determina la proporción de ese país sonbre el total</h3></b></center>
+<center><b><h3>Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte de abajo, los países que quiera comparar. El ancho de banda de cada color determina la magnitud del número de casos de cada país</h3></b></center>
 
 
-<iframe frameBorder="0" src="img/incidencia_confirmados_latam.html" width="100%" height="700" allowtransparency="true"></iframe></iframe>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/incidencia_confirmados_latam.html" width="100%" height="700" allowtransparency="true"></iframe></iframe>
 <a href="https://rafalopezv.io/static/avina/incidencia_confirmados_latam.html" target="_blank"><font size="2">ver en pantalla completa</font></a>
 <br>
 <br>
 <center><b><h1>Casos confirmados *acumulados* por día desde paciente '0' en cada país</h1></b></center>
-<center><b><h3>Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte de abajo, los países que quiera comparar.El ancho de cada color determina la proporción de ese país sonbre el total</h3></b></center>
+<center><b><h3>Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte de abajo, los países que quiera comparar. El ancho de banda de cada color determina la magnitud del número de casos de cada país</h3></b></center>
 
-<iframe frameBorder="0" src="img/prevalencia_confirmados_latam.html" width="100%" height="700" allowtransparency="true"></iframe><a href="https://rafalopezv.io/static/avina/prevalencia_confirmados_latam.html" target="_blank"><font size="2">ver en pantalla completa</font></a>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/prevalencia_confirmados_latam.html" width="100%" height="700" allowtransparency="true"></iframe><a href="https://rafalopezv.io/static/avina/prevalencia_confirmados_latam.html" target="_blank"><font size="2">ver en pantalla completa</font></a>
 
 <br>
 <br>
 <center><b><h1>Nuevos casos de *fallecidos* por día desde fallecido '0' en cada país</h1></b></center>
-<center><b><h3 style="font-family: Source Code Pro;">Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte de abajo, los países que quiera comparar.El ancho de cada color determina la proporción de ese país sonbre el total</h3></b></center>
+<center><b><h3 style="font-family: Source Code Pro;">Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte de abajo, los países que quiera comparar. El ancho de banda de cada color determina la magnitud del número de casos de cada país</h3></b></center>
 
-<iframe frameBorder="0" src="img/incidencia_fallecidos_latam.html" width="100%" height="700" allowtransparency="true"></iframe></iframe><a href="img/incidencia_fallecidos_latam.html" target="_blank"><font size="2">ver en pantalla completa</font></a>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/incidencia_fallecidos_latam.html" width="100%" height="700" allowtransparency="true"></iframe></iframe><a href="https://rafalopezv.io/static/avina/incidencia_fallecidos_latam.html" target="_blank"><font size="2">ver en pantalla completa</font></a>
 
 <br>
 <br>
 <center><b><h1>Fallecidos acomulados por día desde fallecido '0' en cada país</h1></b></center>
-<center><b><h3>Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte de abajo, los países que quiera comparar.El ancho de cada color determina la proporción de ese país sonbre el total</h3></b></center>
+<center><b><h3>Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte de abajo, los países que quiera comparar. El ancho de banda de cada color determina la magnitud del número de casos de cada país</h3></b></center>
 
-<iframe frameBorder="0" src="img/prevalencia_fallecidos_latam.html" width="100%" height="700" allowtransparency="true"></iframe></iframe></iframe><a href="img/prevalencia_fallecidos_latam.html" target="_blank"><font size="2">ver en pantalla completa</font></a>
+<iframe frameBorder="0" src="https://rafalopezv.io/static/avina/prevalencia_fallecidos_latam.html" width="100%" height="700" allowtransparency="true"></iframe></iframe></iframe><a href="https://rafalopezv.io/static/avina/prevalencia_fallecidos_latam.html" target="_blank"><font size="2">ver en pantalla completa</font></a>
 
 <br>
 <br>
@@ -146,16 +145,12 @@ Un parámetro crítico para la modelación y cálculo de Rt es la definición de
 <center>[<img src = "img/pdf.png"  height="60" width="60">](https://rafalopezv.io/static/avina/anexo_jcb_rlv.pdf)</center>
 <br>
 <br>
-<center><h1>Acceder al código de programación</h1></center>
+<center><h1>Código</h1></center>
 <br>
-<center>[<img src = "img/github.png"  height="80" width="160">](https://rafalopezv.io/static/avina/anexo_jcb_rlv.pdf)</center>
+<center>[<img src = "img/github.png"  height="60" width="90">](https://github.com/rafalopezv/covid_latam)</center>
 <br>
 
-<center><b><h1>Créditos respecto a librerías utilizadas</h1></b></center>
-<br>
-Esta página y todos sus contenidos son posibles por la contribución de las siguientes librerías del lenguaje R.
 
-# References
 
 
 

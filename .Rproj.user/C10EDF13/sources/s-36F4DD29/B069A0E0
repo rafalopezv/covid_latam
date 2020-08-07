@@ -2,19 +2,19 @@
     "collab_server" : "",
     "contents" : "",
     "created" : 1595794669852.000,
-    "dirty" : false,
+    "dirty" : true,
     "encoding" : "UTF-8",
     "folds" : "",
     "hash" : "0",
     "id" : "B069A0E0",
-    "lastKnownWriteTime" : 1595798829,
-    "last_content_update" : 1595798829371,
+    "lastKnownWriteTime" : 1595815260,
+    "last_content_update" : 1596057492672,
     "path" : "~/Documents/covid_latam/reporte_latam.Rmd",
     "project_path" : "reporte_latam.Rmd",
     "properties" : {
-        "cursorPosition" : "158,0",
+        "cursorPosition" : "149,104",
         "last_setup_crc32" : "36F4DD293ad62249",
-        "scrollLine" : "0"
+        "scrollLine" : "139"
     },
     "read_only" : false,
     "read_only_alternatives" : [

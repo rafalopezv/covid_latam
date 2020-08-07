@@ -63,7 +63,7 @@ df_mundo %>%
   ungroup() %>% 
   mutate(
     titulo = paste0(pais_nombre_corto, ", ", casos, " casos", "\n", total_semanas,  
-                    " semanas desde paciente 0", "\n", " Nuevos casos última semana:", ult_semana)
+                    " semanas desde paciente 0", "\n", " Casos últ. semana:", ult_semana)
   ) -> temp
 
 
@@ -89,8 +89,8 @@ temp %>%
     axis.title.y = element_blank(),
     panel.background = element_rect(fill = "#F8F8F8", colour = NA),
     strip.background = element_rect(fill = "#F8F8F8", colour = NA),
-  )  + 
-  ggsave("img/confirmados_latam.svg", width = 20, height = 21, limitsize = F)
+  )  -> curva_confirmados 
+  #ggsave("img/confirmados_latam.svg", width = 19, height = 21, limitsize = F) ->
 
 
 # preparación de base: confirmados
@@ -122,7 +122,7 @@ df_mundo %>%
   ungroup() %>% 
   mutate(
     titulo = paste0(pais_nombre_corto, ", ", casos, " fallecidos", "\n", total_semanas,  
-                    " semanas desde fallecido 0", "\n", " Nuevos fallecidos última semana:", ult_semana)
+                    " semanas desde fallecido 0", "\n", " Fallecidos últ. semana:", ult_semana)
   ) -> temp
 
 
@@ -148,8 +148,8 @@ temp %>%
     axis.title.y = element_blank(),
     panel.background = element_rect(fill = "#F8F8F8", colour = NA),
     strip.background = element_rect(fill = "#F8F8F8", colour = NA),
-  )  + 
-  ggsave("img/fallecidos_latam.svg", width = 20, height = 21, limitsize = F)
+  )  -> curva_fallecidos 
+  #ggsave("img/fallecidos_latam.svg", width = 19, height = 21, limitsize = F)
 
 
 
@@ -220,8 +220,8 @@ hchart(temp, "streamgraph", hcaes(fecha, casos_acumulados, group = pais_nombre_c
     itemMarginBottom = 10,
     x = -1,
     y = 105
-  ) %>% 
-  htmlwidgets::saveWidget(here::here("img/prevalencia_confirmados_latam.html"))
+  ) -> rio_confirmados
+  # htmlwidgets::saveWidget(here::here("img/prevalencia_confirmados_latam.html"))
   
 # incidencia latam
 hchart(temp, "streamgraph", hcaes(fecha, incidencia, group = pais_nombre_corto),
@@ -251,8 +251,8 @@ hchart(temp, "streamgraph", hcaes(fecha, incidencia, group = pais_nombre_corto),
     itemMarginBottom = 10,
     x = -1,
     y = 105
-  ) %>% 
-  htmlwidgets::saveWidget(here::here("img/incidencia_confirmados_latam.html"))
+  ) -> incidencia_confirmados 
+  #htmlwidgets::saveWidget(here::here("img/incidencia_confirmados_latam.html"))
 
 
 # streamgraph de fallecidos
@@ -315,8 +315,8 @@ hchart(temp, "streamgraph", hcaes(fecha, casos_acumulados, group = pais_nombre_c
     itemMarginBottom = 10,
     x = -1,
     y = 105
-  ) %>% 
-  htmlwidgets::saveWidget(here::here("img/prevalencia_fallecidos_latam.html"))
+  ) -> rio_fallecidos
+  # htmlwidgets::saveWidget(here::here("img/prevalencia_fallecidos_latam.html"))
 
 # incidencia latam
 hchart(temp, "streamgraph", hcaes(fecha, incidencia, group = pais_nombre_corto),
@@ -347,8 +347,8 @@ hchart(temp, "streamgraph", hcaes(fecha, incidencia, group = pais_nombre_corto),
     itemMarginBottom = 10,
     x = -1,
     y = 105
-  ) %>% 
-  htmlwidgets::saveWidget(here::here("img/incidencia_fallecidos_latam.html"))
+  ) -> incidencia_fallecidos
+  # htmlwidgets::saveWidget(here::here("img/incidencia_fallecidos_latam.html"))
 
 #----------------------------------
 # Rt
@@ -407,8 +407,8 @@ highchart() %>%
                                Límite inferior: <b>{point.limite_inferior}</b><br>
                                Día de inicio de medición: <b>{point.dia_de_inicio}</b><br>
                                Día de cierre de medición: <b>{point.dia_de_cierre}</b><br>"), 
-             headerFormat = "<b>{point.pais_o_region}</b>") %>% 
-  htmlwidgets::saveWidget(here::here("img/rt_latam_confirmados.html"))
+             headerFormat = "<b>{point.pais_o_region}</b>") -> rt_confirmados 
+  # htmlwidgets::saveWidget(here::here("img/rt_latam_confirmados.html"))
 
 # rt para fallecidos
 df_mundo %>% 
@@ -464,8 +464,8 @@ highchart() %>%
                                Límite inferior: <b>{point.limite_inferior}</b><br>
                                Día de inicio de medición: <b>{point.dia_de_inicio}</b><br>
                                Día de cierre de medición: <b>{point.dia_de_cierre}</b><br>"), 
-             headerFormat = "<b>{point.pais_o_region}</b>") %>% 
-  htmlwidgets::saveWidget(here::here("img/rt_latam_fallecidos.html"))
+             headerFormat = "<b>{point.pais_o_region}</b>") -> rt_fallecidos
+  # htmlwidgets::saveWidget(here::here("img/rt_latam_fallecidos.html"))
 
 # serie de tiempo de Rt
 df_mundo %>% 
@@ -487,23 +487,23 @@ codigos %>%
 # graficar
 map(estim_1_latam, rt_tiempo) -> graficos
 
-map(estim_1_latam, "pais_nombre_corto") %>% 
-  unlist() %>% 
-  unique() %>% 
-  tolower() -> nombres
-
-nombres %<>% gsub("é", "e", .)
-nombres %<>% gsub("ú", "u", .)
-nombres %<>% gsub("í", "i", .)
-nombres %<>% gsub("á", "a", .)
-nombres %<>% gsub(" ", "_", .)
-
-nombres <- paste0(nombres, ".html")
-
-directorio <- here::here()
-directorio <- paste0(directorio, "/")
-
-for(i in 1:length(graficos)) {
-  htmlwidgets::saveWidget(widget = graficos[[i]], here::here("img", nombres[i]))
-}
+# map(estim_1_latam, "pais_nombre_corto") %>% 
+#   unlist() %>% 
+#   unique() %>% 
+#   tolower() -> nombres
+# 
+# nombres %<>% gsub("é", "e", .)
+# nombres %<>% gsub("ú", "u", .)
+# nombres %<>% gsub("í", "i", .)
+# nombres %<>% gsub("á", "a", .)
+# nombres %<>% gsub(" ", "_", .)
+# 
+# nombres <- paste0(nombres, ".html")
+# 
+# directorio <- here::here()
+# directorio <- paste0(directorio, "/")
+# 
+# for(i in 1:length(graficos)) {
+#   htmlwidgets::saveWidget(widget = graficos[[i]], here::here("img", nombres[i]))
+# }
 

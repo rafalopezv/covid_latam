@@ -10,3 +10,54 @@ library(R0)
 library(tidyverse)
 library(magrittr)
 
+
+a %<>% select(pob_total, codigo)
+b %<>% select(pob_total_1 = pob_total, codigo)
+a <- rio::import("/Users/rafalopezv/Desktop/base_info_cat_terr.xlsx")
+b <- rio::import("/Users/rafalopezv/Desktop/base_info_cat_terr (1).xlsx")
+c <- rio::import("/Users/rafalopezv/Desktop/base_info_cat_terr (2).xlsx")
+
+a_temp <- a %>% select(codigo, pob_total)
+b_temp <- b %>% select(codigo, pob_total_1 = pob_total)
+c_temp <- c %>% select(codigo, pob_total_2 = pob_total)
+
+d <- merge(a_temp, b_temp)
+d <- merge(d, c_temp)
+
+# lo que yo haría: 
+# 0. escoger una columna o columnas que sean indicativa de la variación general 
+# 1. test de correlacion de todas las variables entre todas las bases
+# 1. (por encima de 0.8 se puede asumir que son iguales) 
+# 2. porcentajes de variación por columnas
+# 3. histogramas para ver variación para ver sistematicidad en variación. 
+
+
+c %>%  
+  filter(perc_pob_urb >= 50) -> temp
+
+<< <- median(temp$perc_pob_urb)
+median_super <- median(temp$perc_sup_urb)
+
+temp %>% 
+  ggplot(aes(perc_pob_urb, perc_sup_urb, size = dens_urb, color = dens_urb)) +
+  geom_point() +
+  geom_hline(yintercept = median_super) +
+  geom_vline(xintercept = median_pobla) +
+  theme_bw()
+
+temp %>% 
+  hchart("scatter", hcaes(x = perc_pob_urb, y = perc_sup_urb, size = dens_urb, color = dens_urb))
+
+
+
+d %>% 
+  ggplot(aes(pob_total_1, pob_total_2)) +
+  geom_point()
+
+d %>% 
+  mutate(
+    variacion_1_2 = pob_total_2 - pob_total_1,
+    variacion_1 = variacion_1_2/pob_total_1 * 100
+  ) %>% 
+  ggplot(aes(variacion_1)) +
+  geom_histogram(color = "white") 

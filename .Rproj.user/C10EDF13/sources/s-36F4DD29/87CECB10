@@ -2,18 +2,18 @@
     "collab_server" : "",
     "contents" : "",
     "created" : 1595799527940.000,
-    "dirty" : false,
+    "dirty" : true,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "2757135612",
+    "hash" : "0",
     "id" : "87CECB10",
-    "lastKnownWriteTime" : 1595799837,
-    "last_content_update" : 1595799837259,
+    "lastKnownWriteTime" : 1595801556,
+    "last_content_update" : 1595801740150,
     "path" : "~/Documents/covid_latam/index.Rmd",
     "project_path" : "index.Rmd",
     "properties" : {
-        "cursorPosition" : "156,0",
-        "scrollLine" : "148"
+        "cursorPosition" : "149,105",
+        "scrollLine" : "145"
     },
     "read_only" : false,
     "read_only_alternatives" : [

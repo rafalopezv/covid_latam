@@ -93,6 +93,19 @@ rt_tiempo <- function(.data) {
 }
 
 
+#-------------------
+a <- rio::import("/Users/rafalopezv/Desktop/base_info_cat_terr.xlsx")
+b <- rio::import("/Users/rafalopezv/Desktop/base_info_cat_terr (1).xlsx")
+
+
+
+
+
+
+
+
+
+
 
 
 
