@@ -67,12 +67,12 @@ rt_tiempo <- function(.data) {
     "line",
     hcaes(dia_de_cierre, promedio, group = base)
   ) %>% 
-    hc_colors(colors = c("#CB1724", "#09283C")) %>% 
+    hc_colors(colors = hex_to_rgba(c("#CB1724", "#09283C"), alpha = 0.6)) %>% 
     hc_plotOptions(
       series = list(
         marker = list(radius = 1.5, enabled = T, symbol = "circle"),
         states = list(hover = list(halo = list(size = 1))),
-        lineWidth = 4
+        lineWidth = 3
       )
     ) %>% 
     hc_chart(style = list(fontFamily = "Source Code Pro")) %>%
@@ -91,8 +91,5 @@ rt_tiempo <- function(.data) {
              align = "center") %>% 
     hc_legend(verticalAlign = "top")
 }
-
-
-
 
 
