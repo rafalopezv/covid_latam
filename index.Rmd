@@ -1,4 +1,5 @@
 ---
+title: "Estado de situación del COVID-19 en América Latina"
 output: 
   html_document: 
     css: style.css
@@ -15,20 +16,28 @@ library(knitr)
 
 source("code/graficos_latam.R")
 
+Sys.setlocale(locale = "es_ES.UTF-8")
 ```
-
-
-<center><b><h1>Estado de situación del COVID-19 en América Latina</h1></b></center>
 <br>
 <center>[Juan Cristóbal Birbuet](https://www.linkedin.com/in/juan-cristóbal-birbuet-rosazza-b563208/) & [Rafael López V.](https://rafalopezv.io/about/)</center>
 <br>
 <center>Última actualización: `r format(Sys.time(), '%d %B, %Y. %X  %Z')`</center>
 <br>
 <br>
+<h1>Número de Reproducción Efectivo dependiente del tiempo (Rt)</h1>
 <br>
+En esta sección se presenta el cálculo semanal del Número de Reproducción Efectivo dependiente del tiempo (Rt) para Bolivia y sus 9 Departamentos. El cálculo se actualiza cada semana y se efectúa con base en el reporte oficial de personas fallecidas, en lugar de hacerlo con el número de personas infectadas. Lo anterior permite reducir el “ruido estadístico” que suele producirse a causa de las variaciones en el número de los test que se realizan, la demora en los resultados de los test, y/o cambios en el protocolo de los test. 
 
-<center><h1>Número de reproducción dependiente del tiempo (Rt) en la última semana en base a **casos confirmados**</h1></center>
-<center><b><h3>Gráfico interactivo: Pase el mouse sobre el gráfico para mayor información.</h3></b></center>
+Para el calculó del Rt, el inicio de la semana está dado por el reporte del primer fallecido en cada departamento. Desde allí, cada semana se comprende como los 7 días siguientes.
+
+En nuestro caso, Rt muestra la velocidad de propagación semanal del virus. Un Rt=1, muestra que durante esa semana la epidemia no creció exponencialmente y se estabilizó; un Rt <1, sugiere que en esa semana la epidemia estuvo en declive y bajo “control”, y un Rt> 1 sugiere que en la semana la epidemia tuvo un crecimiento exponencial y puede considerarse “fuera de control”. En la pandemia actual, se debe mirar hacia Rt para evaluar la transmisión viral, lo que importa es obtener un Rt < 1 de forma consistente, semana tras semana, hasta extinguir la epidemia.
+
+¿Cuál es la diferencia entre R0 y Rt? Mientras que R0 describe el potencial de propagación inicial de una infección en una población completamente susceptible, el número reproductivo efectivo, Rt, captura la transmisión una vez que el virus se propaga y a medida que se inician las medidas de contención
+
+
+
+<center><h2>Número de reproducción dependiente del tiempo (Rt) en la última semana en base a **casos confirmados**</h2></center>
+<center><h4>Gráfico interactivo: Pase el mouse sobre el gráfico para mayor información.</h4></center>
 <br>
 ```{r, include = T, echo = F}
 rt_confirmados
@@ -37,8 +46,8 @@ rt_confirmados
 <br>
 <br>
 <br>
-<center><b><h1>Número de reproducción dependiente del tiempo (Rt) en la última semana en base a  **fallecidos**</h1></b></center>
-<center><b><h3 style="font-family: Source Code Pro;">Gráfico interactivo: Pase el mouse sobre el gráfico para mayor información.</h3></b></center>
+<center><h2>Número de reproducción dependiente del tiempo (Rt) en la última semana en base a  **fallecidos**</h2></center>
+<center><h4>Gráfico interactivo: Pase el mouse sobre el gráfico para mayor información.</h4></center>
 <br>
 ```{r, include = T, echo = F}
 rt_fallecidos
@@ -46,8 +55,8 @@ rt_fallecidos
 <br>
 <br>
 <br>
-<center><b><h1>Serie de tiempo del número de reproducción dependiente del tiempo (Rt) por semana y por país desde el primer confirmado y fallecido  </h1></b></center>
-<center><b><h3 style="font-family: Source Code Pro;">Gráfico interactivo: Pase el mouse sobre el gráfico para mayor información.Puede desactivar las categoría de confirmados o fallecidos</h3></b></center>
+<center><h2>Serie de tiempo del número de reproducción dependiente del tiempo (Rt) por semana y por país desde el primer confirmado y fallecido  </h2></center>
+<center><h4>Gráfico interactivo: Pase el mouse sobre el gráfico para mayor información.Puede desactivar las categoría de confirmados o fallecidos</h4></center>
 <br>
 ```{r, include = T, echo = F}
 graficos[[1]]
@@ -74,28 +83,38 @@ graficos[[20]]
 <br>
 <br>
 <br>
-<center><b><h1>Nuevos casos *confirmados* por día desde paciente '0' en cada país</h1></b></center>
-<center><b><h3>Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte de abajo, los países que quiera comparar. El ancho de cada color determina la proporción de ese país sonbre el total</h3></b></center>
-
-
+<h2>Casos **confirmados** por país y por millón de habitates</h2>
+<h4>Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte derecha, los países que quiera comparar.</h4>
+```{r, include=T, echo = F}
+millon_confirmados
+```
+<br>
+<br>
+<br>
+<h2>**Fallecidos** por país y por millón de habitates</h2>
+<h4>Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte derecha, los países que quiera comparar.</h4>
+```{r, include=T, echo = F}
+millon_fallecidos
+```
+<br>
+<br>
+<h2>Nuevos casos **confirmados** por día desde paciente '0' en cada país</h2>
+<h4>Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte de abajo, los países que quiera comparar. El ancho de cada color determina la proporción de ese país sonbre el total</h4>
+<br>
 ```{r, include=T, echo = F}
 incidencia_confirmados
 ```
-
 <br>
-<br>
-<center><b><h1>Casos confirmados *acumulados* por día desde paciente '0' en cada país</h1></b></center>
-<center><b><h3>Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte de abajo, los países que quiera comparar.El ancho de cada color determina la proporción de ese país sonbre el total</h3></b></center>
+<center><h2>Casos confirmados **acumulados** por día desde paciente '0' en cada país</h2></center>
+<center><h4>Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte de abajo, los países que quiera comparar.El ancho de cada color determina la proporción de ese país sonbre el total</h4></center>
 ```{r, include=T, echo = F}
 rio_confirmados
 ```
 
-
-
 <br>
 <br>
-<center><b><h1>Nuevos casos de *fallecidos* por día desde fallecido '0' en cada país</h1></b></center>
-<center><b><h3 style="font-family: Source Code Pro;">Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte de abajo, los países que quiera comparar.El ancho de cada color determina la proporción de ese país sonbre el total</h3></b></center>
+<center><h2>Nuevos casos de **fallecidos** por día desde fallecido '0' en cada país</h2></center>
+<center><h4>Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte de abajo, los países que quiera comparar.El ancho de cada color determina la proporción de ese país sonbre el total</h4></center>
 
 ```{r, include=T, echo = F}
 incidencia_fallecidos
@@ -103,8 +122,8 @@ incidencia_fallecidos
 
 <br>
 <br>
-<center><b><h1>Fallecidos acomulados por día desde fallecido '0' en cada país</h1></b></center>
-<center><b><h3>Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte de abajo, los países que quiera comparar.El ancho de cada color determina la proporción de ese país sonbre el total</h3></b></center>
+<center><h2>Fallecidos acomulados por día desde fallecido '0' en cada país</h2></center>
+<center><h4>Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte de abajo, los países que quiera comparar.El ancho de cada color determina la proporción de ese país sonbre el total</h4></center>
 ```{r, include=T, echo = F}
 rio_fallecidos
 ```
@@ -112,34 +131,78 @@ rio_fallecidos
 <br>
 <br>
 <br>
-<center><b><h1>¿Dónde se está aplanando la curva?</h1></b></center>
-<center><b><h2>Nuevos casos confirmados confirmados por semana</h2></b></center>
+<center><h2>¿Dónde se está aplanando la curva?</h2></center>
+<center><h4>Nuevos casos confirmados confirmados por semana</h4></center>
 
-```{r, include=T, echo = F,  fig.height = 15, fig.width = 20}
+```{r, include=T, echo = F,  fig.height = 21, fig.width = 20}
 curva_confirmados
 ```
 
 <br>
 <br>
 <br>
-<center><b><h2>Nuevos casos fallecidos confirmados por semana</h2></b></center>
-```{r, include=T, echo = F,  fig.height = 15, fig.width = 20}
+<center><h2>Nuevos casos fallecidos confirmados por semana</h2></center>
+```{r, include=T, echo = F,  fig.height = 21, fig.width = 20}
 curva_fallecidos
 ```
-
-
-<center><b><h1>Metodología sobre Rt</h1></b></center>
-
-<small>
 <br>
-
-Para evaluar la velocidad de propagación del covid-19, se estimó Rt empleando el método desarrollado por [Cori et al, 2013](https://academic.oup.com/aje/article/178/9/1505/89262).  Se ha incluido una descripción detallada del método en el anexo metodológico. Utilizamos el paquete EpiEstim R para estimar Rt en intervalos de tiempo de una semana. Rt representa el número de casos secundarios que surgen a partir de un individuo infectado en un intervalo de tiempo determinado, suponiendo que las condiciones permanecen idénticas en el siguiente intervalo de tiempo y, por lo tanto, es una medida de la transmisibilidad instantánea.
-
- 
-Un parámetro crítico para la modelación y cálculo de Rt es la definición del Intervalo en Serie (SI). El SI es el tiempo que transcurre entre el inicio de los síntomas del caso primario y el inicio de los síntomas en el caso secundario. El SI tiene una distribución estadística que se simula empleando una distribución gamma con una media de 6.48 y una desviación estándar de 3.83 (la media y la desviación estándar utilizadas se obtuvieron del Short-term forecasts of COVID-19 deaths in multiple countries, efectuado por el [Imperial College London](https://mrc-ide.github.io/covid19-short-term-forecasts/index.html#projections-and-effective-reproduction-number-estimates).
+<br>
+<br>
+<h1>Tablas</h1>
+<br>
+Aquí encontrará los datos con los indicadores antes descritos pero en formato de tabla 188 países del mundo
+<br>
+```{r, echo=F, warning=F, message=F}
+library(reactable)
+df_mundo %>%
+  filter(
+    base == "confirmados",
+    pais_region %in% codigos$pais_region
+  ) %>% 
+  left_join(codigos, .) %>% 
+  mutate(
+    "Infectados/Fallecidos por millón de habitates" = casos_acumulados/poblacion * 1000000,
+    "Infectados/Fallecidos por millón de habitates" = round(`Infectados/Fallecidos por millón de habitates`, 0), 
+    base = str_to_title(base)
+  ) %>% 
+  dplyr::select(
+    `País` = pais_nombre_corto, `Medición` = base, Fecha = fecha, `Total semanas desde acceso a datos` =
+      total_semanas,  `Infectados/Fallecidos por millón de habitates`, `Casos Acumulados` = casos_acumulados, 
+    `Nuevos casos` = incidencia
+  ) %>% 
+  arrange(`País`, desc(Fecha)) %>% 
+  reactable(groupBy = c("País", "Medición"),
+            language = reactableLang(
+              searchPlaceholder = "Buscar país",
+              noData = "No fue encontrado",
+              pageInfo = "{rowStart} - {rowEnd} de {rows} filas",
+              pagePrevious = "\u276e",
+              pageNext = "\u276f",
+              pagePreviousLabel = "Anterior",
+              pageNextLabel = "Siguiente"
+  ),
+          searchable = TRUE,
+          striped = TRUE,
+          highlight = TRUE,
+          bordered = TRUE,
+          theme = reactableTheme(
+            borderColor = "#dfe2e5",
+            stripedColor = "#f6f8fa",
+            highlightColor = "#f0f5f9",
+            cellPadding = "8px 12px",
+            style = list(
+              fontFamily = "Source Code Pro",
+              fontSize = "14px"
+            ),
+            searchInputStyle = list(width = "100%")
+            )
+)
+```
+<br>
+<br>
 <br>
 <center><h3>Descargar anexo metodológico</h3></center>
-</small>
+
 
 <br>
 <center>[<img src = "img/pdf.png"  height="60" width="60">](https://rafalopezv.io/static/avina/anexo_jcb_rlv.pdf)</center>
@@ -147,12 +210,39 @@ Un parámetro crítico para la modelación y cálculo de Rt es la definición de
 <br>
 <center><h1>Acceder al código de programación</h1></center>
 <br>
-<center>[<img src = "img/github.png"  height="80" width="160">](https://github.com/rafalopezv/covid_latam)</center>
+<center>[<img src = "img/github.png"  height="50" width="80">](https://github.com/rafalopezv/covid_latam)</center>
 <br>
 
-<center><b><h1>Créditos respecto a librerías utilizadas</h1></b></center>
+<h2>Créditos respecto a librerías utilizadas</h2>
 <br>
 Esta página y todos sus contenidos son posibles por la contribución de las siguientes librerías del lenguaje R.
+
+<br>
+
+<small>
+Henrik Bengtsson (2019). future: Unified Parallel and Distributed Processing in R for Everyone. R package version 1.15.1.https://CRAN.R-project.org/package=future
+
+Anne Cori (2019). EpiEstim: Estimate Time Varying Reproduction Numbers from Epidemic Curves. R package version 2.2-1. https://CRAN.R-project.org/package=EpiEstim
+
+Joshua Kunst (2020). highcharter: A Wrapper for the 'Highcharts' Library. http://jkunst.com/highcharter, https://github.com/jbkunst/highcharter.
+
+Stefan Milton Bache and Hadley Wickham (2014). magrittr: A Forward-Pipe Operator for R. R package version 1.5. https://CRAN.R-project.org/package=magrittr
+
+Hadley Wickham (2017). tidyverse: Easily Install and Load the 'Tidyverse'. R package version 1.2.1. https://CRAN.R-project.org/package=tidyverse
+  
+Hadley Wickham, Romain François, Lionel Henry and Kirill Müller (2020). dplyr: A Grammar of Data Manipulation. R package version 1.0.0. https://CRAN.R-project.org/package=dplyr
+
+Hadley Wickham and Lionel Henry (2020). tidyr: Tidy Messy Data. R package version 1.1.0. https://CRAN.R-project.org/package=tidyr
+
+Hadley Wickham (2019). rvest: Easily Harvest (Scrape) Web Pages. R package version 0.3.4. https://CRAN.R-project.org/package=rvest
+
+Greg Lin (2020). reactable: Interactive Data Tables Based on 'React Table'. R package version 0.2.0. https://CRAN.R-project.org/package=reactable
+
+Davis Vaughan and Matt Dancho (2018). furrr: Apply Mapping Functions in Parallel using Futures. R package version 0.1.0. https://CRAN.R-project.org/package=furrr
+
+Yihui Xie (2019). knitr: A General-Purpose Package for Dynamic Report Generation in R. R package version 1.24.
+</small>
+
 
 
 

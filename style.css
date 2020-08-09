@@ -16,3 +16,8 @@ a {
  a:hover {
     color: #3689bf; /* darker color when hovering */
   }
+  
+/*----------------- center headings ---------------------*/  
+h1, h2, h3, h4 {
+  text-align: center;
+}

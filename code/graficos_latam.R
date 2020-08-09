@@ -90,10 +90,46 @@ temp %>%
     panel.background = element_rect(fill = "#F8F8F8", colour = NA),
     strip.background = element_rect(fill = "#F8F8F8", colour = NA),
   )  -> curva_confirmados 
-  #ggsave("img/confirmados_latam.svg", width = 19, height = 21, limitsize = F) ->
+
+# por millon infectados
+colores <- c("#698E7C", "#552F31", "#EE5D36", "#EFCF40", "#DC363B", "#315886", "#552F31", "#EFCF40", "#CBB193",
+             "#698E7C", "#DC363B", "#EE5D36", "#315886", "#2B2D2D", "#EE5D36", "#DC363B", "#EFCF40", "#2B2D2D",
+             "#552F31", "#CBB193")
+
+temp %>% 
+  mutate(
+    por_millon = casos_acumulados/poblacion *1000000,
+    por_millon = round(por_millon, 0)
+  ) %>%
+  hchart(
+    "line",
+    hcaes(
+      x = fecha, y = por_millon, group = pais_nombre_corto
+    )
+  ) %>%
+  hc_tooltip(table = T, shared = T, sort = T, outside = T, borderWidth = 0.01, 
+             style = list(fontFamily = "IBM Plex Mono")) %>%
+  hc_xAxis(title = list(text = NULL)) %>%
+  hc_yAxis(title = list(text = "Casos acumulados por millón de habitantes")) %>%
+  hc_chart(style = list(fontFamily = "Source Code Pro")) %>%
+  hc_colors(colors = colores) %>%
+  hc_legend(layout = "proximate", align = "right") %>%
+  hc_plotOptions(line = list(
+    lineWidth = 3,
+    connectNulls = F,
+    animation = list(
+      duration = 3000
+    ),
+    marker = list(
+      enabled = F,
+      symbol = "circle",
+      radius = 2
+    )
+  )
+) -> millon_confirmados 
 
 
-# preparación de base: confirmados
+# preparación de base: fallecidos
 df_mundo %>%
   filter(
     base == "fallecidos",
@@ -125,6 +161,40 @@ df_mundo %>%
                     " semanas desde fallecido 0", "\n", " Fallecidos últ. semana:", ult_semana)
   ) -> temp
 
+# nillon fallecidos
+temp %>% 
+  mutate(
+    por_millon = casos_acumulados/poblacion *1000000,
+    por_millon = round(por_millon, 0)
+  ) %>%
+  hchart(
+    "line",
+    hcaes(
+      x = fecha, y = por_millon, group = pais_nombre_corto
+    )
+  ) %>%
+  hc_tooltip(table = T, shared = T, sort = T, outside = T, borderWidth = 0.01, 
+             style = list(fontFamily = "IBM Plex Mono")) %>%
+  hc_xAxis(title = list(text = NULL)) %>%
+  hc_yAxis(title = list(text = "Fallecidos por millón de habitantes")) %>%
+  hc_chart(style = list(fontFamily = "Source Code Pro")) %>%
+  hc_colors(colors = colores) %>%
+  hc_legend(layout = "proximate", align = "right") %>%
+  hc_plotOptions(line = list(
+    lineWidth = 3,
+    connectNulls = F,
+    animation = list(
+      duration = 3000
+    ),
+    marker = list(
+      enabled = F,
+      symbol = "circle",
+      radius = 2
+    )
+  )
+) -> millon_fallecidos 
+
+
 
 temp %>% 
   dplyr::select(pais_region, casos) %>% 
@@ -149,10 +219,7 @@ temp %>%
     panel.background = element_rect(fill = "#F8F8F8", colour = NA),
     strip.background = element_rect(fill = "#F8F8F8", colour = NA),
   )  -> curva_fallecidos 
-  #ggsave("img/fallecidos_latam.svg", width = 19, height = 21, limitsize = F)
-
-
-
+  
 #------------------------------------
 # streamgraph de confirmados
 #------------------------------------
@@ -203,7 +270,8 @@ hchart(temp, "streamgraph", hcaes(fecha, casos_acumulados, group = pais_nombre_c
          )
        )
      ) %>% 
-  hc_tooltip(shared = T, table = T, sort = T, borderWidth = 0.01) %>% 
+  hc_tooltip(shared = T, table = T, sort = T, borderWidth = 0.01, 
+             style = list(fontFamily = "Source Code Pro")) %>% 
   hc_yAxis(visible = F) %>% 
   hc_xAxis(title = list(text = "")) %>% 
   hc_chart(style = list(fontFamily = "Source Code Pro")) %>% 
@@ -220,8 +288,8 @@ hchart(temp, "streamgraph", hcaes(fecha, casos_acumulados, group = pais_nombre_c
     itemMarginBottom = 10,
     x = -1,
     y = 105
-  ) -> rio_confirmados
-  # htmlwidgets::saveWidget(here::here("img/prevalencia_confirmados_latam.html"))
+  ) %>% 
+  hc_size(height = 900) -> rio_confirmados
   
 # incidencia latam
 hchart(temp, "streamgraph", hcaes(fecha, incidencia, group = pais_nombre_corto),
@@ -234,7 +302,8 @@ hchart(temp, "streamgraph", hcaes(fecha, incidencia, group = pais_nombre_corto),
          )
        )
 ) %>% 
-  hc_tooltip(shared = T, table = T, sort = T, outside = T, borderWidth = 0.01) %>% 
+  hc_tooltip(shared = T, table = T, sort = T, outside = T, borderWidth = 0.01,
+             style = list(fontFamily = "Source Code Pro")) %>% 
   hc_yAxis(visible = F) %>% 
   hc_xAxis(title = list(text = "")) %>% 
   hc_chart(style = list(fontFamily = "Source Code Pro")) %>% 
@@ -251,8 +320,9 @@ hchart(temp, "streamgraph", hcaes(fecha, incidencia, group = pais_nombre_corto),
     itemMarginBottom = 10,
     x = -1,
     y = 105
-  ) -> incidencia_confirmados 
-  #htmlwidgets::saveWidget(here::here("img/incidencia_confirmados_latam.html"))
+  ) %>% 
+  hc_size(height = 900) -> incidencia_confirmados 
+  
 
 
 # streamgraph de fallecidos
@@ -297,7 +367,8 @@ hchart(temp, "streamgraph", hcaes(fecha, casos_acumulados, group = pais_nombre_c
          )
        )
 ) %>% 
-  hc_tooltip(shared = T, table = T, sort = T, borderWidth = 0.01) %>% 
+  hc_tooltip(shared = T, table = T, sort = T, borderWidth = 0.01,
+             style = list(fontFamily = "Source Code Pro")) %>% 
   hc_yAxis(visible = F) %>% 
   hc_xAxis(title = list(text = "")) %>% 
   hc_chart(style = list(fontFamily = "Source Code Pro")) %>% 
@@ -315,9 +386,9 @@ hchart(temp, "streamgraph", hcaes(fecha, casos_acumulados, group = pais_nombre_c
     itemMarginBottom = 10,
     x = -1,
     y = 105
-  ) -> rio_fallecidos
-  # htmlwidgets::saveWidget(here::here("img/prevalencia_fallecidos_latam.html"))
-
+  ) %>% 
+  hc_size(height = 900) -> rio_fallecidos
+  
 # incidencia latam
 hchart(temp, "streamgraph", hcaes(fecha, incidencia, group = pais_nombre_corto),
        label = list(
@@ -329,7 +400,8 @@ hchart(temp, "streamgraph", hcaes(fecha, incidencia, group = pais_nombre_corto),
          )
        )
 ) %>% 
-  hc_tooltip(shared = T, table = T, sort = T, outside = T, borderWidth = 0.01) %>% 
+  hc_tooltip(shared = T, table = T, sort = T, outside = T, borderWidth = 0.01,
+             style = list(fontFamily = "Source Code Pro")) %>% 
   hc_yAxis(visible = F) %>% 
   hc_xAxis(title = list(text = "")) %>% 
   hc_chart(style = list(fontFamily = "Source Code Pro")) %>% 
@@ -347,8 +419,8 @@ hchart(temp, "streamgraph", hcaes(fecha, incidencia, group = pais_nombre_corto),
     itemMarginBottom = 10,
     x = -1,
     y = 105
-  ) -> incidencia_fallecidos
-  # htmlwidgets::saveWidget(here::here("img/incidencia_fallecidos_latam.html"))
+  ) %>% 
+  hc_size(height = 900) -> incidencia_fallecidos
 
 #----------------------------------
 # Rt
@@ -388,7 +460,7 @@ highchart() %>%
   hc_chart(style = list(fontFamily = "Source Code Pro")) %>% 
   hc_plotOptions(
     scatter = list(
-      marker = list(radius = 5, enabled = T, symbol = "circle"),
+      marker = list(radius = 7, enabled = T, symbol = "circle"),
       states = list(hover = list(halo = list(size = 1)))
     )
   ) %>% 
@@ -396,7 +468,7 @@ highchart() %>%
            categories = aa$pais_nombre_corto) %>% 
   hc_yAxis(title = list(text = "Rt"), min = 0, 
            plotLines = list(
-             list(label = list(text = "Objetivo"),
+             list(label = list(text = "Rt = 1"),
                   color = "#09283C",
                   width = 2,
                   value = 1))) %>% 
@@ -407,7 +479,8 @@ highchart() %>%
                                Límite inferior: <b>{point.limite_inferior}</b><br>
                                Día de inicio de medición: <b>{point.dia_de_inicio}</b><br>
                                Día de cierre de medición: <b>{point.dia_de_cierre}</b><br>"), 
-             headerFormat = "<b>{point.pais_o_region}</b>") -> rt_confirmados 
+             headerFormat = "<b>{point.pais_o_region}</b>", 
+             style = list(fontFamily = "Source Code Pro")) -> rt_confirmados 
   # htmlwidgets::saveWidget(here::here("img/rt_latam_confirmados.html"))
 
 # rt para fallecidos
@@ -445,7 +518,7 @@ highchart() %>%
   hc_chart(style = list(fontFamily = "Source Code Pro")) %>% 
   hc_plotOptions(
     scatter = list(
-      marker = list(radius = 5, enabled = T, symbol = "circle"),
+      marker = list(radius = 7, enabled = T, symbol = "circle"),
       states = list(hover = list(halo = list(size = 1)))
     )
   ) %>% 
@@ -453,7 +526,7 @@ highchart() %>%
            categories = aa$pais_nombre_corto) %>% 
   hc_yAxis(title = list(text = "Rt"), min = 0, 
            plotLines = list(
-             list(label = list(text = "Objetivo"),
+             list(label = list(text = "Rt = 1"),
                   color = "#CB1724",
                   width = 2,
                   value = 1))) %>% 
@@ -465,7 +538,7 @@ highchart() %>%
                                Día de inicio de medición: <b>{point.dia_de_inicio}</b><br>
                                Día de cierre de medición: <b>{point.dia_de_cierre}</b><br>"), 
              headerFormat = "<b>{point.pais_o_region}</b>") -> rt_fallecidos
-  # htmlwidgets::saveWidget(here::here("img/rt_latam_fallecidos.html"))
+  
 
 # serie de tiempo de Rt
 df_mundo %>% 
@@ -486,24 +559,4 @@ codigos %>%
 
 # graficar
 map(estim_1_latam, rt_tiempo) -> graficos
-
-# map(estim_1_latam, "pais_nombre_corto") %>% 
-#   unlist() %>% 
-#   unique() %>% 
-#   tolower() -> nombres
-# 
-# nombres %<>% gsub("é", "e", .)
-# nombres %<>% gsub("ú", "u", .)
-# nombres %<>% gsub("í", "i", .)
-# nombres %<>% gsub("á", "a", .)
-# nombres %<>% gsub(" ", "_", .)
-# 
-# nombres <- paste0(nombres, ".html")
-# 
-# directorio <- here::here()
-# directorio <- paste0(directorio, "/")
-# 
-# for(i in 1:length(graficos)) {
-#   htmlwidgets::saveWidget(widget = graficos[[i]], here::here("img", nombres[i]))
-# }
 
