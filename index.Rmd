@@ -99,22 +99,22 @@ millon_fallecidos
 <br>
 <br>
 <h2>Nuevos casos **confirmados** por día desde paciente '0' en cada país</h2>
-<h4>Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte de abajo, los países que quiera comparar. El ancho de cada color determina la proporción de ese país sonbre el total</h4>
+<h4>Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte de abajo, los países que quiera comparar. El ancho de cada color determina la proporción de ese país sobre el total</h4>
 <br>
 ```{r, include=T, echo = F}
 incidencia_confirmados
 ```
 <br>
 <center><h2>Casos confirmados **acumulados** por día desde paciente '0' en cada país</h2></center>
-<center><h4>Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte de abajo, los países que quiera comparar.El ancho de cada color determina la proporción de ese país sonbre el total</h4></center>
+<center><h4>Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte de abajo, los países que quiera comparar.El ancho de cada color determina la proporción de ese país sobre el total</h4></center>
 ```{r, include=T, echo = F}
 rio_confirmados
 ```
 
 <br>
 <br>
-<center><h2>Nuevos casos de **fallecidos** por día desde fallecido '0' en cada país</h2></center>
-<center><h4>Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte de abajo, los países que quiera comparar.El ancho de cada color determina la proporción de ese país sonbre el total</h4></center>
+<center><h2>Nuevos casos de **fallecidos** por día desde el fallecido '0' en cada país</h2></center>
+<center><h4>Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte de abajo, los países que quiera comparar.El ancho de cada color determina la proporción de ese país sobre el total</h4></center>
 
 ```{r, include=T, echo = F}
 incidencia_fallecidos
@@ -122,8 +122,8 @@ incidencia_fallecidos
 
 <br>
 <br>
-<center><h2>Fallecidos acomulados por día desde fallecido '0' en cada país</h2></center>
-<center><h4>Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte de abajo, los países que quiera comparar.El ancho de cada color determina la proporción de ese país sonbre el total</h4></center>
+<center><h2>Fallecidos acumulados por día desde el fallecido '0' en cada país</h2></center>
+<center><h4>Gráfico interactivo: Pase el mouse sobre el gráfico y seleccione, en la parte de abajo, los países que quiera comparar.El ancho de cada color determina la proporción de ese país sobre el total</h4></center>
 ```{r, include=T, echo = F}
 rio_fallecidos
 ```
@@ -132,7 +132,7 @@ rio_fallecidos
 <br>
 <br>
 <center><h2>¿Dónde se está aplanando la curva?</h2></center>
-<center><h4>Nuevos casos confirmados confirmados por semana</h4></center>
+<center><h4>Nuevos casos confirmados por semana</h4></center>
 
 ```{r, include=T, echo = F,  fig.height = 21, fig.width = 20}
 curva_confirmados
@@ -141,7 +141,7 @@ curva_confirmados
 <br>
 <br>
 <br>
-<center><h2>Nuevos casos fallecidos confirmados por semana</h2></center>
+<center><h2>Nuevos casos de fallecidos confirmados por semana</h2></center>
 ```{r, include=T, echo = F,  fig.height = 21, fig.width = 20}
 curva_fallecidos
 ```
@@ -150,7 +150,7 @@ curva_fallecidos
 <br>
 <h1>Tablas</h1>
 <br>
-Aquí encontrará los datos con los indicadores antes descritos pero en formato de tabla 188 países del mundo
+Aquí encontrará los datos con los indicadores antes descritos pero en formato de tabla para 188 países del mundo
 <br>
 ```{r, echo=F, warning=F, message=F}
 library(reactable)
